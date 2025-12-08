@@ -12,7 +12,7 @@ The workflow enables comparison of two different geospatial datasets by:
 
 ## Scripts
 
-### 1. `regrid_mlhfi.py`
+### 1. `regrid.py`
 Regrids MLHFI data to match DIRTCLIM spatial resolution.
 
 **Usage:**
@@ -47,12 +47,16 @@ python create_timeseries.py
 ```python
 ds1 = load_tifs_to_dataset("mlhfi_regridded/*.tif")
 ```
+**Note:** Modify the output file name in `__main__' section:
+```python
+ds1.to_netcdf("mlhfi_timeseries.nc")
+```
 
 **Output:** `mlhfi_timeseries.nc`
 
 ---
 
-### 3. `compute_trends.py`
+### 3. `run_linear_regressions.py`
 Performs linear regression on time series data for both MLHFI and DIRTCLIM datasets.
 
 **Usage:**
@@ -70,7 +74,7 @@ python compute_trends.py
 
 ---
 
-### 4. `bivariate_map.py`
+### 4. `plot_linear_regressions.py`
 Creates bivariate choropleth maps showing trends in both datasets simultaneously.
 
 **Usage:**
@@ -98,23 +102,23 @@ python bivariate_map.py <dirtclim_regression> <mlhfi_regression> <n_bins>
 ### Option A: Process One Year at a Time (Recommended for Testing)
 ```bash
 # 1. Regrid MLHFI data for individual years
-python regrid_mlhfi.py mlhfi_2000.tif dirtclim_2000.tif 2000
-python regrid_mlhfi.py mlhfi_2001.tif dirtclim_2001.tif 2001
+python regrid.py mlhfi_2000.tif dirtclim_2000.tif 2000
+python regrid.py mlhfi_2001.tif dirtclim_2001.tif 2001
 # ... repeat for all years
 
 # 2. Create time series
 python create_timeseries.py
 
 # 3. Compute trends
-python compute_trends.py
+python run_linear_regressions.py
 
 # 4. Create bivariate map
-python bivariate_map.py dirtclim_regression.tif mlhfi_regression.tif 4
+python plot_linear_regressions.py dirtclim_regression.tif mlhfi_regression.tif 4
 ```
 
 ### Option B: Process Multiple Years Using File ID (Batch Processing)
 
-For batch processing, modify `regrid_mlhfi.py` to use the batch `main()` function:
+For batch processing, modify `regrid.py` to use the batch `main()` function:
 ```python
 # Uncomment this main function in regrid_mlhfi.py:
 def main(mlhfi,dirtclim,file_id):
@@ -127,10 +131,10 @@ def main(mlhfi,dirtclim,file_id):
 Then run with array job indexing:
 ```bash
 # Process year 2000 (index 0)
-python regrid_mlhfi.py mlhfi_2000.tif dirtclim_2000.tif 0
+python regrid.py mlhfi_2000.tif dirtclim_2000.tif 0
 
 # Process year 2005 (index 5)
-python regrid_mlhfi.py mlhfi_2005.tif dirtclim_2005.tif 5
+python regrid.py mlhfi_2005.tif dirtclim_2005.tif 5
 
 # Or use a loop to process all years:
 for i in {0..20}; do
@@ -170,7 +174,7 @@ pip install numpy xarray pandas geopandas rasterio rioxarray xarray-regrid matpl
 
 ## Data Requirements
 
-- **MLHFI data**: TIF files with geospatial fire data
+- **MLHFI data**: TIF files with geospatial human footprint data
 - **DIRTCLIM data**: TIF files with climate data
 - Both datasets should have spatial coordinates (x, y) and CRS metadata
 
