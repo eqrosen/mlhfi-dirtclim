@@ -199,3 +199,18 @@ pip install numpy xarray pandas geopandas rasterio rioxarray xarray-regrid matpl
 **Issue:** Memory errors with large datasets
 - Consider using `extra_coarsen` parameter to reduce resolution
 - Process data in chunks or tiles
+
+
+## File locations in the SCC
+**Regridded MLHFI data:**
+/projectnb/eb-general/erosen/mlhfi_dirtclim/mlhfi_regridded/file_name.tif
+**Timeseries data:**
+/projectnb/eb-general/erosen/mlhfi_dirtclim/mlhfi_timeseries.nc
+/projectnb/eb-general/erosen/mlhfi_dirtclim/dirtclim_timeseries.nc
+**Regressions:**
+/projectnb/eb-general/erosen/mlhfi_dirtclim/mlhfi_regression.tif
+/projectnb/eb-general/erosen/mlhfi_dirtclim/dirtclim_regression.tif
+**Original MLHFI data:**
+/projectnb/eb-general/erosen/mlhfi_dirtclim/mlhfi_dirtclim/mlhfi/file_name.tif
+**Dirtclim data:**
+/projectnb/eb-general/erosen/mlhfi_dirtclim/mlhfi_dirtclim/dirtclim/bioclim/BIO1/file_name.tif
