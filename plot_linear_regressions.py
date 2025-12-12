@@ -194,8 +194,8 @@ def main(dirtclim, mlhfi, n_bins):
 
     mlhfi_data  = xr.open_dataarray(mlhfi).squeeze()
     
-    dirtclim_slope = dirtclim_data[1]
-    mlhfi_slope = mlhfi_data[1]
+    dirtclim_slope = dirtclim_data[0]
+    mlhfi_slope = mlhfi_data[0]
 
     fig, ax = create_bivariate_map(
     dirtclim_slope,  
