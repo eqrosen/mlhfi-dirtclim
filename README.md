@@ -71,6 +71,14 @@ python compute_trends.py
 **Outputs:**
 - `mlhfi_regression.tif` - Regression coefficients for MLHFI
 - `dirtclim_regression.tif` - Regression coefficients for DIRTCLIM
+- To select the slope, index zero on the file when loading, eg:
+
+```python
+regression_slopes = xr.open_dataarray('mlhfi_regression.tif')
+regression_slopes[0]
+```
+(This is done automatically for you in the plotting code)
+If you load the tif files into QGIS, then the slopes are located in Band 1 of the tif file. 
 
 ---
 
