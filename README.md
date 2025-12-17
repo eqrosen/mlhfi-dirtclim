@@ -135,23 +135,19 @@ def main(mlhfi,dirtclim,file_id):
     year = years[file_id]
     regrid_and_save(mlhfi,dirtclim,year)
 ```
-
-Then run with array job indexing:
+Run all years using task ID in a bash script, then submit using qsub on the SCC
 ```bash
-# Process year 2000 (index 0)
-python regrid.py mlhfi_2000.tif dirtclim_2000.tif 0
+# Process all years in your bash script
 
-# Process year 2005 (index 5)
-python regrid.py mlhfi_2005.tif dirtclim_2005.tif 5
+inputs=($(ls mlhfi_dirtclim/mlhfi/*.tif))
+taskinput=${inputs[$(($SGE_TASK_ID-1))]}
 
-# Or use a loop to process all years:
-for i in {0..20}; do
-    python regrid_mlhfi.py mlhfi_timeseries/$i.tif dirtclim_template.tif $i
-done
+dirts=($(ls mlhfi_dirtclim/dirtclim/bioclim/BIO1/*.tif))
+dirt_input=${dirts[$(($SGE_TASK_ID-1))]}
 
-# Or with SLURM array jobs:
-# sbatch --array=0-20 regrid_job.sh
+python ./regrid.py "$taskinput" "$dirt_input" "$SGE_TASK_ID"
 ```
+qsub _bash_file.sh 
 
 **Note:** The batch option is useful when:
 - Processing many years simultaneously on HPC clusters
